@@ -22,6 +22,7 @@ public class UserController {
         return ResponseEntity.ok(savedUser);
     }
 
+
     @GetMapping
     public List<User> getAllUsers() {
         return userService.findAll();
@@ -38,15 +39,16 @@ public class UserController {
         Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             User existingUser = user.get();
-            existingUser.setName(userDetails.getName());
-            existingUser.setEmail(userDetails.getEmail());
-            existingUser.setPassword(userDetails.getPassword());
+            existingUser.setUserName(userDetails.getUserName()); // Cambia a setUserName
+            existingUser.setPassword(userDetails.getPassword()); // Mantén setPassword
+            // No hay setEmail ya que en el esquema de la base de datos no existe el campo 'email'
             userService.save(existingUser);
             return ResponseEntity.ok(existingUser);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {

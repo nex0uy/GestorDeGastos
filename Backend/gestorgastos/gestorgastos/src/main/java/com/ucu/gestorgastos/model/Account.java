@@ -1,44 +1,68 @@
 package com.ucu.gestorgastos.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "accounts")
+@Table(name = "\"Bank_Account\"")  // Cambia el nombre de la tabla a "Bank_Account"
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String accountName;
-    private Double balance;
+    private Long bankAccountId;
+
+    @Column(nullable = false)
+    private String bankName;
+
+    @Column(nullable = false)
+    private String baseCurrency;
+
+    @Column(nullable = false)
+    private Double initialBalance;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id") // Asegúrate de que este campo se refiera al id del usuario
+    private User user;
 
     // Getters y setters
 
-    public Long getId() {
-        return id;
+    public Long getBankAccountId() {
+        return bankAccountId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setBankAccountId(Long bankAccountId) {
+        this.bankAccountId = bankAccountId;
     }
 
-    public String getAccountName() {
-        return accountName;
+    public String getBankName() {
+        return bankName;
     }
 
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
-    public Double getBalance() {
-        return balance;
+    public String getBaseCurrency() {
+        return baseCurrency;
     }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
+    public void setBaseCurrency(String baseCurrency) {
+        this.baseCurrency = baseCurrency;
+    }
+
+    public Double getInitialBalance() {
+        return initialBalance;
+    }
+
+    public void setInitialBalance(Double initialBalance) {
+        this.initialBalance = initialBalance;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
