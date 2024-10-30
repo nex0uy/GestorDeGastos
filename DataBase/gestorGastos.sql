@@ -9,11 +9,12 @@ CREATE TABLE "Category" (
     category_name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE "Budget" (
-    budget_id SERIAL PRIMARY KEY,
-    max_amount NUMERIC(10, 2) NOT NULL,
-    alert_triggered BOOLEAN DEFAULT FALSE,
-    category_id INT REFERENCES "Category" (category_id)
+CREATE TABLE "Bank_Account" (
+    bank_account_id SERIAL PRIMARY KEY,
+    bank_name VARCHAR(100) NOT NULL,
+    base_currency VARCHAR(10) NOT NULL,
+    initial_balance NUMERIC(10, 2) NOT NULL,
+    user_id INT REFERENCES "User" (user_id)
 );
 
 CREATE TABLE "Transaction" (
@@ -28,12 +29,11 @@ CREATE TABLE "Transaction" (
     bank_account_id INT REFERENCES "Bank_Account" (bank_account_id)
 );
 
-CREATE TABLE "Bank_Account" (
-    bank_account_id SERIAL PRIMARY KEY,
-    bank_name VARCHAR(100) NOT NULL,
-    base_currency VARCHAR(10) NOT NULL,
-    initial_balance NUMERIC(10, 2) NOT NULL,
-    user_id INT REFERENCES "User" (user_id)
+CREATE TABLE "Budget" (
+    budget_id SERIAL PRIMARY KEY,
+    max_amount NUMERIC(10, 2) NOT NULL,
+    alert_triggered BOOLEAN DEFAULT FALSE,
+    category_id INT REFERENCES "Category" (category_id)
 );
 
 CREATE TABLE "Currency" (

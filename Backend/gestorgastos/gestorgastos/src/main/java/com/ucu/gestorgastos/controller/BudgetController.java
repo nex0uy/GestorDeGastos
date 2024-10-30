@@ -1,6 +1,5 @@
 package com.ucu.gestorgastos.controller;
 
-
 import com.ucu.gestorgastos.model.Budget;
 import com.ucu.gestorgastos.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
