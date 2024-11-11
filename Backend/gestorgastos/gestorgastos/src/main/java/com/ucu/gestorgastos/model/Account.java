@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 
 @Entity
-@Table(name = "\"Bank_Account\"")  // Cambia el nombre de la tabla a "Bank_Account"
+@Table(name = "\"Bank_Account\"")
 public class Account {
 
     @Id
