@@ -9,7 +9,7 @@ CREATE TABLE "category" (
     category_name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE "bank_Account" (
+CREATE TABLE "bank_account" (
     bank_account_id SERIAL PRIMARY KEY,
     bank_name VARCHAR(100) NOT NULL,
     base_currency VARCHAR(10) NOT NULL,
