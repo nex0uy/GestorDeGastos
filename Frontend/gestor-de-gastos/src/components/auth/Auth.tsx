@@ -3,24 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import { login, signup } from '../../services/api';
+import { setUserData } from '../../utils/storage';
+import LoadingSpinner from '../LoadingSpinner';
 
 const Auth: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleAuth = async (username: string, password: string) => {
+    setIsLoading(true);
     try {
       if (isLogin) {
         const data = await login(username, password);
         console.log('Inicio de sesión exitoso', data);
-        // Aquí normalmente guardarías el token
+        setUserData(data);
         navigate('/dashboard');
       } else {
-        // Para el registro, primero necesitamos obtener un token iniciando sesión
-        const loginData = await login('Rafa', '12345');
-        const signupData = await signup(username, password, loginData.token);
+        const signupData = await signup(username, password);
         console.log('Registro exitoso', signupData);
         setSuccessMessage('Registro exitoso. Por favor, inicia sesión.');
         setTimeout(() => {
@@ -32,6 +34,8 @@ const Auth: React.FC = () => {
     } catch (err) {
       setError(isLogin ? 'Error de inicio de sesión. Por favor, verifica tus credenciales.' : 'Error de registro. Por favor, inténtalo de nuevo.');
       console.error(isLogin ? 'Error de inicio de sesión' : 'Error de registro', err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -71,6 +75,7 @@ const Auth: React.FC = () => {
             {isLogin ? '¿Necesitas una cuenta? Regístrate' : '¿Ya tienes una cuenta? Inicia sesión'}
           </button>
         </div>
+        {isLoading && <LoadingSpinner />}
       </div>
     </div>
   );
