@@ -32,6 +32,9 @@ public class BankAccount implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
+    public Long getUserId() {
+        return user != null ? user.getUserId() : null;
+    }
 
 
 

@@ -47,13 +47,12 @@ public class TransactionService {
         }
     }
 
-    public Optional<Transaction> updateTransaction(Long id, Transaction transaction) {
+    public Optional<Transaction> updateTransaction(Long id, Transaction transaction, Long userId) {
         Transaction existingTransaction = repositoryTransaction.findById(id).orElse(null);
-        if (existingTransaction == null) {
+        if (existingTransaction == null || !existingTransaction.getUser().getUserId().equals(userId)) {
             return Optional.empty();
         }
 
-        Long userId = transaction.getUserId();
         Long categoryId = transaction.getCategoryId();
         Long bankAccountId = transaction.getBankAccountId();
 
@@ -74,7 +73,6 @@ public class TransactionService {
             existingTransaction.setCategory(category);
             existingTransaction.setBankAccount(bankAccount);
 
-            // Actualiza el balance dependiendo de si la transacción es de ingreso o gasto
             updateBankAccountBalance(bankAccount, newAmount.subtract(originalAmount), transaction.getType());
 
             Transaction updatedTransaction = repositoryTransaction.save(existingTransaction);
@@ -84,28 +82,34 @@ public class TransactionService {
         }
     }
 
-    public Optional<Transaction> getById(Long id) {
-        return repositoryTransaction.findById(id);
+    public Optional<Transaction> getById(Long id, Long userId) {
+        Optional<Transaction> transaction = repositoryTransaction.findById(id);
+        return transaction.filter(t -> t.getUser().getUserId().equals(userId));
     }
 
-    public List<Transaction> getAll() {
-        return repositoryTransaction.findAll();
+    public List<Transaction> getAllByUser(Long userId) {
+        User user = repositoryUser.findById(userId).orElse(null);
+        if (user != null) {
+            return repositoryTransaction.findByUser(user);
+        }
+        return List.of();
     }
 
-    public boolean deleteTransaction(Long id) {
-        if (repositoryTransaction.existsById(id)) {
-            Transaction transaction = repositoryTransaction.findById(id).get();
-            BankAccount bankAccount = transaction.getBankAccount();
-            updateBankAccountBalance(bankAccount, transaction.getAmount().negate(), transaction.getType());
-
-            repositoryTransaction.deleteById(id);
-            return true;
+    public boolean deleteTransaction(Long id, Long userId) {
+        Optional<Transaction> transactionOptional = repositoryTransaction.findById(id);
+        if (transactionOptional.isPresent()) {
+            Transaction transaction = transactionOptional.get();
+            if (transaction.getUser().getUserId().equals(userId)) {
+                BankAccount bankAccount = transaction.getBankAccount();
+                updateBankAccountBalance(bankAccount, transaction.getAmount().negate(), transaction.getType());
+                repositoryTransaction.deleteById(id);
+                return true;
+            }
         }
         return false;
     }
 
     private void updateBankAccountBalance(BankAccount bankAccount, BigDecimal amount, Transaction.TransactionType transactionType) {
-        // Verificamos el tipo de transacción y ajustamos el balance
         if (transactionType == Transaction.TransactionType.EXPENSE) {
             bankAccount.setInitialBalance(bankAccount.getInitialBalance().subtract(amount));
         } else if (transactionType == Transaction.TransactionType.INCOME) {
@@ -114,17 +118,20 @@ public class TransactionService {
         repositoryBankAccount.save(bankAccount);
     }
 
-    // Filtrar transacciones por categoría (tipo de gasto)
-    public List<Transaction> getTransactionsByCategory(Long categoryId) {
+    public List<Transaction> getTransactionsByCategory(Long categoryId, Long userId) {
         Category category = repositoryCategory.findById(categoryId).orElse(null);
-        if (category != null) {
-            return repositoryTransaction.findByCategory(category);
+        User user = repositoryUser.findById(userId).orElse(null);
+        if (category != null && user != null) {
+            return repositoryTransaction.findByCategoryAndUser(category, user);
         }
-        return List.of(); // Devuelve una lista vacía si no se encuentra la categoría
+        return List.of();
     }
 
-    // Filtrar transacciones por tipo (INCOME o EXPENSE)
-    public List<Transaction> getTransactionsByType(Transaction.TransactionType type) {
-        return repositoryTransaction.findByType(type);
+    public List<Transaction> getTransactionsByType(Transaction.TransactionType type, Long userId) {
+        User user = repositoryUser.findById(userId).orElse(null);
+        if (user != null) {
+            return repositoryTransaction.findByTypeAndUser(type, user);
+        }
+        return List.of();
     }
 }
