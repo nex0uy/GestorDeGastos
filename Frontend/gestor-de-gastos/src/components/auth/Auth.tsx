@@ -3,10 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import { login, signup } from '../../services/api';
-import { setUserData } from '../../utils/storage';
+import { setUserData, getUserData } from '../../utils/storage';
 import LoadingSpinner from '../LoadingSpinner';
 
-const Auth: React.FC = () => {
+interface AuthProps {
+  setIsAuthenticated: (value: boolean) => void;
+}
+
+const Auth: React.FC<AuthProps> = ({ setIsAuthenticated }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -18,9 +22,12 @@ const Auth: React.FC = () => {
     try {
       if (isLogin) {
         const data = await login(username, password);
-        console.log('Inicio de sesión exitoso', data);
+        console.log('Login successful, received data:', data);
         setUserData(data);
-        navigate('/dashboard');
+        setIsAuthenticated(true);
+        const storedData = getUserData();
+        console.log('Stored user data:', storedData);
+        navigate('/');
       } else {
         const signupData = await signup(username, password);
         console.log('Registro exitoso', signupData);
@@ -32,8 +39,8 @@ const Auth: React.FC = () => {
       }
       setError('');
     } catch (err) {
+      console.error('Authentication error:', err);
       setError(isLogin ? 'Error de inicio de sesión. Por favor, verifica tus credenciales.' : 'Error de registro. Por favor, inténtalo de nuevo.');
-      console.error(isLogin ? 'Error de inicio de sesión' : 'Error de registro', err);
     } finally {
       setIsLoading(false);
     }
