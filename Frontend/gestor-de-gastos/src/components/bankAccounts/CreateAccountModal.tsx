@@ -55,14 +55,18 @@ const CreateAccountModal: React.FC<CreateAccountModalProps> = ({ isOpen, onClose
           </div>
           <div className="mb-4">
             <label htmlFor="baseCurrency" className="block mb-2">Moneda Base</label>
-            <input
+            <select
               id="baseCurrency"
-              type="text"
               value={newAccount.baseCurrency}
               onChange={(e) => setNewAccount({ ...newAccount, baseCurrency: e.target.value })}
               className="w-full p-2 border rounded"
               required
-            />
+            >
+              <option value="">Seleccione una moneda</option>
+              <option value="UYU">UYU</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+            </select>
           </div>
           <div className="mb-4">
             <label htmlFor="initialBalance" className="block mb-2">Saldo Inicial</label>
@@ -88,3 +92,4 @@ const CreateAccountModal: React.FC<CreateAccountModalProps> = ({ isOpen, onClose
 };
 
 export default CreateAccountModal;
+

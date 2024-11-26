@@ -109,4 +109,3 @@ export const getBankAccountDetails = async (userId: number, bankAccountId: numbe
   const response = await api.get(`/bank-accounts/user/${userId}/account/${bankAccountId}`);
   return response.data;
 };
-

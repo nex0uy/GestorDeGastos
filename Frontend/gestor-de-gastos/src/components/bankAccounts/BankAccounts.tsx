@@ -79,4 +79,3 @@ const BankAccounts: React.FC = () => {
 };
 
 export default BankAccounts;
-

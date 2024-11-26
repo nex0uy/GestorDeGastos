@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getUserData } from '../../utils/storage';
 import { getAllTransactions, Transaction } from '../../services/api_trans';
+import { checkBudgetStatus, getAllCategories, BudgetAlert } from '../../services/api_dash';
 import TransactionList from '../transactions/TransactionsList';
 import LoadingSpinner from '../common/LoadingSpinner';
 
@@ -13,6 +14,7 @@ const Dashboard: React.FC<DashboardProps> = ({ refreshDashboard }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [budgetAlerts, setBudgetAlerts] = useState<BudgetAlert[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +24,19 @@ const Dashboard: React.FC<DashboardProps> = ({ refreshDashboard }) => {
           setUserName(userData.userName);
           const transactionsData = await getAllTransactions(userData.userId);
           setTransactions(transactionsData);
+
+          // Fetch categories and check budget status
+          const categories = await getAllCategories();
+          const alerts = await Promise.all(
+            categories.map(async (category) => {
+              const alert = await checkBudgetStatus(userData.userId, category.categoryId);
+              if (alert) {
+                return { ...alert, categoryName: category.categoryName };
+              }
+              return null;
+            })
+          );
+          setBudgetAlerts(alerts.filter((alert): alert is BudgetAlert => alert !== null));
         }
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -73,6 +88,16 @@ const Dashboard: React.FC<DashboardProps> = ({ refreshDashboard }) => {
 
   return (
     <div className="p-6 space-y-6">
+      {budgetAlerts.length > 0 && (
+        <div className="mb-4">
+          {budgetAlerts.map((alert, index) => (
+            <div key={index} className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-2">
+              <p className="font-bold">{alert.categoryName}</p>
+              <p>{alert.message}</p>
+            </div>
+          ))}
+        </div>
+      )}
       <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
       <p className="text-xl text-gray-600">Bienvenido, {userName}!</p>
       

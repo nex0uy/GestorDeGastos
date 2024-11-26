@@ -80,13 +80,16 @@ const BankAccountItem: React.FC<BankAccountItemProps> = ({ account, onUpdate, on
           className="w-full p-2 border rounded-md mb-2"
           required
         />
-        <input
-          type="text"
+        <select
           value={editedAccount.baseCurrency}
           onChange={(e) => setEditedAccount({ ...editedAccount, baseCurrency: e.target.value })}
           className="w-full p-2 border rounded-md mb-2"
           required
-        />
+        >
+          <option value="UYU">UYU</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select>
         <input
           type="number"
           value={editedAccount.initialBalance}
