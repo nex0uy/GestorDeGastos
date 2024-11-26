@@ -7,7 +7,7 @@ import BankAccounts from './components/bankAccounts/BankAccounts';
 import MonthlyReport from './components/reports/MonthlyReport';
 import CategoryReport from './components/reports/CategoryReport';
 import BudgetList from './components/budgets/BudgetList';
-import { getUserData, clearUserData } from './utils/storage';
+import { getUserData } from './utils/storage';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
