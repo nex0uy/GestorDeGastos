@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { HomeIcon, CreditCardIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, CreditCardIcon, ChartPieIcon, ChartBarIcon, ArrowLeftOnRectangleIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
 import { Bars3Icon } from '@heroicons/react/24/solid';
 import { clearUserData } from '../../utils/storage';
 
@@ -45,6 +45,18 @@ const Sidebar: React.FC<SidebarProps> = ({ updateAuthStatus }) => {
           <Link to="/bank-accounts" onClick={closeSidebar} className={`block py-2.5 px-4 rounded transition duration-200 ${location.pathname === '/bank-accounts' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}>
             <CreditCardIcon className="h-5 w-5 inline-block mr-2" />
             Cuentas Bancarias
+          </Link>
+          <Link to="/budgets" onClick={closeSidebar} className={`block py-2.5 px-4 rounded transition duration-200 ${location.pathname === '/budgets' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}>
+            <CurrencyDollarIcon className="h-5 w-5 inline-block mr-2" />
+            Presupuestos
+          </Link>
+          <Link to="/monthly-report" onClick={closeSidebar} className={`block py-2.5 px-4 rounded transition duration-200 ${location.pathname === '/monthly-report' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}>
+            <ChartPieIcon className="h-5 w-5 inline-block mr-2" />
+            Reporte Mensual
+          </Link>
+          <Link to="/category-report" onClick={closeSidebar} className={`block py-2.5 px-4 rounded transition duration-200 ${location.pathname === '/category-report' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}>
+            <ChartBarIcon className="h-5 w-5 inline-block mr-2" />
+            Reporte por Categoría
           </Link>
         </nav>
         <button

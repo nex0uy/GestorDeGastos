@@ -4,6 +4,9 @@ import Auth from './components/auth/Auth';
 import Dashboard from './components/dashboard/Dashboard';
 import Sidebar from './components/layout/Sidebar';
 import BankAccounts from './components/bankAccounts/BankAccounts';
+import MonthlyReport from './components/reports/MonthlyReport';
+import CategoryReport from './components/reports/CategoryReport';
+import BudgetList from './components/budgets/BudgetList';
 import { getUserData, clearUserData } from './utils/storage';
 
 function App() {
@@ -41,6 +44,21 @@ function App() {
         <Route path="/bank-accounts" element={
           <Layout>
             {isAuthenticated ? <BankAccounts /> : <Navigate to="/login" replace />}
+          </Layout>
+        } />
+        <Route path="/monthly-report" element={
+          <Layout>
+            {isAuthenticated ? <MonthlyReport /> : <Navigate to="/login" replace />}
+          </Layout>
+        } />
+        <Route path="/category-report" element={
+          <Layout>
+            {isAuthenticated ? <CategoryReport /> : <Navigate to="/login" replace />}
+          </Layout>
+        } />
+        <Route path="/budgets" element={
+          <Layout>
+            {isAuthenticated ? <BudgetList /> : <Navigate to="/login" replace />}
           </Layout>
         } />
       </Routes>

@@ -10,9 +10,6 @@ api.interceptors.request.use((config) => {
   const userData = getUserData();
   if (userData && userData.token) {
     config.headers['Authorization'] = userData.token;
-    console.log('Token added to request:', userData.token);
-  } else {
-    console.log('No token found in userData');
   }
   return config;
 });
@@ -50,8 +47,23 @@ export const signup = async (userName: string, password: string) => {
 };
 
 export const getBankAccounts = async (userId: number) => {
-  const response = await api.get(`/bank-accounts/user/${userId}`);
-  return response.data;
+  const userData = getUserData();
+  if (!userData || !userData.token) {
+    throw new Error('No authentication token found');
+  }
+
+  try {
+    const response = await api.get(`/bank-accounts/user/${userId}`, {
+      headers: {
+        'Authorization': userData.token
+      }
+    });
+    console.log('Bank accounts response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching bank accounts:', error);
+    throw error;
+  }
 };
 
 export const createBankAccount = async (accountData: any) => {
