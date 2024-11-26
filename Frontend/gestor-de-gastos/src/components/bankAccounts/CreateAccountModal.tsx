@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { createBankAccount } from '../services/api';
-import { getUserData } from '../utils/storage';
+import { createBankAccount } from '../../services/api';
+import { getUserData } from '../../utils/storage';
 
 interface CreateAccountModalProps {
   isOpen: boolean;

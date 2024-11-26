@@ -4,7 +4,7 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import { login, signup } from '../../services/api';
 import { setUserData, getUserData } from '../../utils/storage';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 interface AuthProps {
   setIsAuthenticated: (value: boolean) => void;

@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import Auth from './components/auth/Auth';
-import Dashboard from './components/Dashboard';
-import Sidebar from './components/Sidebar';
-import BankAccounts from './components/BankAccounts';
+import Dashboard from './components/dashboard/Dashboard';
+import Sidebar from './components/layout/Sidebar';
+import BankAccounts from './components/bankAccounts/BankAccounts';
 import { getUserData, clearUserData } from './utils/storage';
 
 function App() {

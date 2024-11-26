@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getUserData } from '../utils/storage';
+import { getUserData } from '../../utils/storage';
 
 const Dashboard: React.FC = () => {
   const [userName, setUserName] = useState<string | null>(null);

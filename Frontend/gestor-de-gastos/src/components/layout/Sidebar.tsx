@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { HomeIcon, CreditCardIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
 import { Bars3Icon } from '@heroicons/react/24/solid';
-import { clearUserData } from '../utils/storage';
+import { clearUserData } from '../../utils/storage';
 
 interface SidebarProps {
   updateAuthStatus: () => void;

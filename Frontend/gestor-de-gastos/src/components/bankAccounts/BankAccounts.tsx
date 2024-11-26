@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { getUserData } from '../utils/storage';
-import { getBankAccounts } from '../services/api';
-import LoadingSpinner from './LoadingSpinner';
+import { getUserData } from '../../utils/storage';
+import { getBankAccounts } from '../../services/api';
+import LoadingSpinner from '../common/LoadingSpinner';
 import BankAccountItem from './BankAccountItem';
 import CreateAccountModal from './CreateAccountModal';
 

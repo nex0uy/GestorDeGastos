@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { updateBankAccount, deleteBankAccount } from '../services/api';
-import { getUserData } from '../utils/storage';
+import { updateBankAccount, deleteBankAccount } from '../../services/api';
+import { getUserData } from '../../utils/storage';
 
 interface BankAccount {
   bankAccountId: number;
