@@ -39,7 +39,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5174")); // IP o dominio permitido
+        configuration.setAllowedOrigins(List.of("http://localhost:5174","https://gestor-gastos-frontend.azurewebsites.net")); // IP o dominio permitido
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Headers permitidos
         configuration.setAllowCredentials(true); // Permitir envío de cookies o credenciales
