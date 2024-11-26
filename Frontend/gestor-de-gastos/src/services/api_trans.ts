@@ -57,16 +57,12 @@ export const updateTransaction = async (transactionId: number, transactionData: 
     throw new Error('No authentication token found');
   }
 
-  console.log('Updating transaction with ID:', transactionId);
-  console.log('Transaction data:', transactionData);
-
   const response = await api.put(`/transaction/update/${transactionId}/user/${userData.userId}`, transactionData, {
     headers: {
       'Authorization': userData.token,
       'Content-Type': 'application/json'
     }
   });
-  console.log('Update response:', response.data);
   return response.data;
 };
 
@@ -76,7 +72,6 @@ export const deleteTransaction = async (transactionId: number): Promise<void> =>
     throw new Error('No authentication token found');
   }
 
-  console.log('Attempting to delete transaction with ID:', transactionId);
 
   try {
     await api.delete(`/transaction/delete/${transactionId}/user/${userData.userId}`, {
@@ -84,11 +79,8 @@ export const deleteTransaction = async (transactionId: number): Promise<void> =>
         'Authorization': userData.token
       }
     });
-    console.log('Delete request successful');
   } catch (error) {
-    console.error('Error in deleteTransaction:', error);
     if (axios.isAxiosError(error)) {
-      console.error('Axios error details:', error.response?.data);
       throw new Error(`Failed to delete transaction: ${error.response?.status} ${error.response?.statusText}`);
     }
     throw error;
@@ -107,10 +99,8 @@ export const getAllCategories = async (): Promise<Category[]> => {
         'Authorization': `Bearer ${userData.token}`
       }
     });
-    console.log('Categories response:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Error fetching categories:', error);
     throw error;
   }
 };

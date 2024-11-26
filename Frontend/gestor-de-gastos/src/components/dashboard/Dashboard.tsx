@@ -25,7 +25,6 @@ const Dashboard: React.FC<DashboardProps> = ({ refreshDashboard }) => {
           const transactionsData = await getAllTransactions(userData.userId);
           setTransactions(transactionsData);
 
-          // Fetch categories and check budget status
           const categories = await getAllCategories();
           const alerts = await Promise.all(
             categories.map(async (category) => {
@@ -39,7 +38,6 @@ const Dashboard: React.FC<DashboardProps> = ({ refreshDashboard }) => {
           setBudgetAlerts(alerts.filter((alert): alert is BudgetAlert => alert !== null));
         }
       } catch (err) {
-        console.error('Error fetching data:', err);
         setError('Error al cargar los datos. Por favor, intenta de nuevo.');
       } finally {
         setLoading(false);

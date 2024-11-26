@@ -40,16 +40,13 @@ const BankAccountItem: React.FC<BankAccountItemProps> = ({ account, onUpdate, on
       if (!userData || !userData.token) {
         throw new Error('No se encontró el token de autenticación');
       }
-      console.log('Attempting to update account:', account.bankAccountId, editedAccount);
       await updateBankAccount(account.bankAccountId, {
         ...editedAccount,
         user: { userId: account.user.userId }
       });
-      console.log('Account updated successfully');
       setIsEditing(false);
       onUpdate();
     } catch (error) {
-      console.error('Error updating bank account:', error);
       setError('Error al actualizar la cuenta. Por favor, inténtalo de nuevo.');
     }
   };
@@ -60,12 +57,9 @@ const BankAccountItem: React.FC<BankAccountItemProps> = ({ account, onUpdate, on
       if (!userData || !userData.token) {
         throw new Error('No se encontró el token de autenticación');
       }
-      console.log('Attempting to delete account:', account.bankAccountId);
       await deleteBankAccount(account.bankAccountId);
-      console.log('Account deleted successfully');
       onDelete();
     } catch (error) {
-      console.error('Error deleting bank account:', error);
       setError('Error al eliminar la cuenta. Por favor, inténtalo de nuevo.');
     }
   };

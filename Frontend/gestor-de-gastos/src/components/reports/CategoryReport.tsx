@@ -23,7 +23,6 @@ const CategoryReport: React.FC = () => {
           setTransactions(data);
         }
       } catch (err) {
-        console.error('Error fetching transactions:', err);
         setError('Error al cargar las transacciones. Por favor, intenta de nuevo.');
       } finally {
         setLoading(false);

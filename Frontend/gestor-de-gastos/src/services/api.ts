@@ -17,7 +17,6 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API Error:', error.response?.status, error.response?.data);
     return Promise.reject(error);
   }
 );
@@ -58,10 +57,8 @@ export const getBankAccounts = async (userId: number) => {
         'Authorization': userData.token
       }
     });
-    console.log('Bank accounts response:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Error fetching bank accounts:', error);
     throw error;
   }
 };
@@ -79,7 +76,6 @@ export const updateBankAccount = async (bankAccountId: number, accountData: any)
   if (!userData || !userData.token) {
     throw new Error('No authentication token found');
   }
-  console.log('Updating bank account with token:', userData.token);
   const response = await api.put(`/bank-accounts/update/${bankAccountId}`, accountData, {
     headers: {
       'Authorization': userData.token
@@ -96,7 +92,6 @@ export const deleteBankAccount = async (bankAccountId: number) => {
   if (!userData || !userData.token) {
     throw new Error('No authentication token found');
   }
-  console.log('Deleting bank account with token:', userData.token);
   const response = await api.delete(`/bank-accounts/delete/${bankAccountId}`, {
     headers: {
       'Authorization': userData.token

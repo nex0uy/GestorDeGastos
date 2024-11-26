@@ -41,12 +41,9 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ isOpen, onClose, onTr
           getAllCategories(),
           getBankAccounts(userData.userId)
         ]);
-        console.log('Fetched categories:', categoriesData);
-        console.log('Fetched bank accounts:', accountsData);
         setCategories(categoriesData);
         setBankAccounts(accountsData);
       } catch (err) {
-        console.error('Error fetching data:', err);
         setError('Error al cargar los datos. Por favor, intenta de nuevo.');
       }
     };
@@ -111,13 +108,10 @@ e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         bankAccount: { bankAccountId: parseInt(formData.bankAccountId) },
       };
 
-      console.log('Transaction data to be sent:', transactionData);
 
       if (transaction) {
-        console.log('Updating transaction with ID:', transaction.transactionId);
         await updateTransaction(transaction.transactionId, transactionData);
       } else {
-        console.log('Creating new transaction');
         await createTransaction(transactionData);
       }
 
@@ -134,7 +128,6 @@ e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       });
       setError(null);
     } catch (err) {
-      console.error('Error creating/updating transaction:', err);
       if (err instanceof Error) {
         setError(`Error al crear/actualizar la transacción: ${err.message}`);
       } else {

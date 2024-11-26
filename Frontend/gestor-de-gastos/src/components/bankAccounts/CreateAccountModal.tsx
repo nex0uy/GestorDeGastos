@@ -31,7 +31,6 @@ const CreateAccountModal: React.FC<CreateAccountModalProps> = ({ isOpen, onClose
       }
     } catch (err) {
       setError('Error al crear la cuenta bancaria');
-      console.error(err);
     }
   };
 

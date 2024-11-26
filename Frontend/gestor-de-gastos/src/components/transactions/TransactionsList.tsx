@@ -22,12 +22,10 @@ const TransactionList: React.FC<TransactionListProps> = ({ refreshDashboard }) =
       const userData = getUserData();
       if (userData) {
         const data = await getAllTransactions(userData.userId);
-        // Ordenar las transacciones por fecha de forma descendente
         const sortedTransactions = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         setTransactions(sortedTransactions);
       }
     } catch (err) {
-      console.error('Error al cargar las transacciones:', err);
       setError('Error al cargar las transacciones. Por favor, intenta de nuevo.');
     } finally {
       setLoading(false);
@@ -45,7 +43,6 @@ const TransactionList: React.FC<TransactionListProps> = ({ refreshDashboard }) =
         await fetchTransactions();
         refreshDashboard();
       } catch (err) {
-        console.error('Error al eliminar la transacción:', err);
         setError('Error al eliminar la transacción. Por favor, intenta de nuevo.');
       }
     }

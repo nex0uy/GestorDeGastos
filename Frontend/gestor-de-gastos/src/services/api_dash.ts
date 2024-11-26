@@ -33,10 +33,8 @@ export const checkBudgetStatus = async (userId: number, categoryId: number): Pro
     return null;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
-      console.log(`No budget found for category ${categoryId}`);
       return null;
     }
-    console.error('Error checking budget status:', error);
     return null;
   }
 };
@@ -46,7 +44,6 @@ export const getAllCategories = async (): Promise<{ categoryId: number; category
     const response = await api.get('/category/getall');
     return response.data;
   } catch (error) {
-    console.error('Error fetching categories:', error);
     return [];
   }
 };

@@ -19,7 +19,6 @@ const BudgetList: React.FC = () => {
       const data = await getAllBudgets();
       setBudgets(data);
     } catch (err) {
-      console.error('Error fetching budgets:', err);
       setError('Error al cargar los presupuestos. Por favor, intenta de nuevo.');
     } finally {
       setLoading(false);
@@ -36,7 +35,6 @@ const BudgetList: React.FC = () => {
         await deleteBudget(budgetId);
         setBudgets(budgets.filter(budget => budget.budgetId !== budgetId));
       } catch (err) {
-        console.error('Error deleting budget:', err);
         setError('Error al eliminar el presupuesto. Por favor, intenta de nuevo.');
       }
     }

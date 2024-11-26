@@ -26,7 +26,6 @@ const EditBudgetModal: React.FC<EditBudgetModalProps> = ({ isOpen, onClose, onBu
         const categoriesData = await getAllCategories();
         setCategories(categoriesData);
       } catch (err) {
-        console.error('Error fetching categories:', err);
         setError('Error al cargar las categorías. Por favor, intenta de nuevo.');
       }
     };
@@ -61,7 +60,6 @@ const EditBudgetModal: React.FC<EditBudgetModalProps> = ({ isOpen, onClose, onBu
       onBudgetUpdated();
       onClose();
     } catch (err) {
-      console.error('Error updating budget:', err);
       setError('Error al actualizar el presupuesto. Por favor, intenta de nuevo.');
     }
   };

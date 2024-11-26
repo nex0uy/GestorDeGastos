@@ -35,7 +35,6 @@ const BankAccounts: React.FC = () => {
       }
     } catch (err) {
       setError('Error al cargar las cuentas bancarias');
-      console.error(err);
     } finally {
       setLoading(false);
     }

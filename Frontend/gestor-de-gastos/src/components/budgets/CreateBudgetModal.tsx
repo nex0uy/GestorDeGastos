@@ -26,7 +26,6 @@ const CreateBudgetModal: React.FC<CreateBudgetModalProps> = ({ isOpen, onClose, 
         const categoriesData = await getAllCategories();
         setCategories(categoriesData);
       } catch (err) {
-        console.error('Error fetching categories:', err);
         setError('Error al cargar las categorías. Por favor, intenta de nuevo.');
       }
     };
@@ -57,7 +56,6 @@ const CreateBudgetModal: React.FC<CreateBudgetModalProps> = ({ isOpen, onClose, 
       onBudgetCreated();
       onClose();
     } catch (err) {
-      console.error('Error creating budget:', err);
       setError('Error al crear el presupuesto. Por favor, intenta de nuevo.');
     }
   };

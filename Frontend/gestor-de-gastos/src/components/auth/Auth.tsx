@@ -22,15 +22,12 @@ const Auth: React.FC<AuthProps> = ({ setIsAuthenticated }) => {
     try {
       if (isLogin) {
         const data = await login(username, password);
-        console.log('Login successful, received data:', data);
         setUserData(data);
         setIsAuthenticated(true);
         const storedData = getUserData();
-        console.log('Stored user data:', storedData);
         navigate('/');
       } else {
         const signupData = await signup(username, password);
-        console.log('Registro exitoso', signupData);
         setSuccessMessage('Registro exitoso. Por favor, inicia sesión.');
         setTimeout(() => {
           setIsLogin(true);
@@ -39,7 +36,6 @@ const Auth: React.FC<AuthProps> = ({ setIsAuthenticated }) => {
       }
       setError('');
     } catch (err) {
-      console.error('Authentication error:', err);
       setError(isLogin ? 'Error de inicio de sesión. Por favor, verifica tus credenciales.' : 'Error de registro. Por favor, inténtalo de nuevo.');
     } finally {
       setIsLoading(false);
