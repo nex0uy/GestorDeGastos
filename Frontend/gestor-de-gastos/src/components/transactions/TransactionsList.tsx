@@ -5,7 +5,11 @@ import LoadingSpinner from '../common/LoadingSpinner';
 import TransactionItem from './TransactionItem';
 import TransactionForm from './TransactionsForm';
 
-const TransactionList: React.FC = () => {
+interface TransactionListProps {
+  refreshDashboard: () => void;
+}
+
+const TransactionList: React.FC<TransactionListProps> = ({ refreshDashboard }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +22,9 @@ const TransactionList: React.FC = () => {
       const userData = getUserData();
       if (userData) {
         const data = await getAllTransactions(userData.userId);
-        setTransactions(data);
+        // Ordenar las transacciones por fecha de forma descendente
+        const sortedTransactions = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        setTransactions(sortedTransactions);
       }
     } catch (err) {
       console.error('Error al cargar las transacciones:', err);
@@ -36,7 +42,8 @@ const TransactionList: React.FC = () => {
     if (window.confirm('¿Estás seguro de que quieres eliminar esta transacción?')) {
       try {
         await deleteTransaction(transactionId);
-        setTransactions(transactions.filter(t => t.transactionId !== transactionId));
+        await fetchTransactions();
+        refreshDashboard();
       } catch (err) {
         console.error('Error al eliminar la transacción:', err);
         setError('Error al eliminar la transacción. Por favor, intenta de nuevo.');
@@ -52,6 +59,11 @@ const TransactionList: React.FC = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedTransaction(undefined);
+  };
+
+  const handleTransactionCreated = async () => {
+    await fetchTransactions();
+    refreshDashboard();
   };
 
   if (loading) return <LoadingSpinner />;
@@ -103,7 +115,7 @@ const TransactionList: React.FC = () => {
       <TransactionForm
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        onTransactionCreated={fetchTransactions}
+        onTransactionCreated={handleTransactionCreated}
         transaction={selectedTransaction}
       />
     </div>

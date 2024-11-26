@@ -4,7 +4,11 @@ import { getAllTransactions, Transaction } from '../../services/api_trans';
 import TransactionList from '../transactions/TransactionsList';
 import LoadingSpinner from '../common/LoadingSpinner';
 
-const Dashboard: React.FC = () => {
+interface DashboardProps {
+  refreshDashboard: () => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ refreshDashboard }) => {
   const [userName, setUserName] = useState<string | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -87,7 +91,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <TransactionList />
+      <TransactionList refreshDashboard={refreshDashboard} />
     </div>
   );
 };

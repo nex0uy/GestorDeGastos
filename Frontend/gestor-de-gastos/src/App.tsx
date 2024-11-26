@@ -11,6 +11,7 @@ import { getUserData, clearUserData } from './utils/storage';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [dashboardKey, setDashboardKey] = useState(0);
 
   const updateAuthStatus = useCallback(() => {
     const userData = getUserData();
@@ -20,6 +21,10 @@ function App() {
   useEffect(() => {
     updateAuthStatus();
   }, [updateAuthStatus]);
+
+  const refreshDashboard = () => {
+    setDashboardKey(prevKey => prevKey + 1);
+  };
 
   const Layout = ({ children }: { children: React.ReactNode }) => (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
@@ -38,7 +43,7 @@ function App() {
         } />
         <Route path="/" element={
           <Layout>
-            {isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />}
+            {isAuthenticated ? <Dashboard key={dashboardKey} refreshDashboard={refreshDashboard} /> : <Navigate to="/login" replace />}
           </Layout>
         } />
         <Route path="/bank-accounts" element={

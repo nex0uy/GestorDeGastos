@@ -80,7 +80,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ isOpen, onClose, onTr
     }
   }, [transaction]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     setFormData(prev => ({
       ...prev,
