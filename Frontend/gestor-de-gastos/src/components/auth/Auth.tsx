@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import { login, signup } from '../../services/api';
-import { setUserData, getUserData } from '../../utils/storage';
+import { setUserData } from '../../utils/storage';
 import LoadingSpinner from '../common/LoadingSpinner';
 
 interface AuthProps {
@@ -22,12 +22,13 @@ const Auth: React.FC<AuthProps> = ({ setIsAuthenticated }) => {
     try {
       if (isLogin) {
         const data = await login(username, password);
+        console.log('Login successful, received data:', data);
         setUserData(data);
         setIsAuthenticated(true);
-        const storedData = getUserData();
         navigate('/');
       } else {
-        const signupData = await signup(username, password);
+        await signup(username, password);
+        console.log('Registro exitoso');
         setSuccessMessage('Registro exitoso. Por favor, inicia sesión.');
         setTimeout(() => {
           setIsLogin(true);
@@ -36,6 +37,7 @@ const Auth: React.FC<AuthProps> = ({ setIsAuthenticated }) => {
       }
       setError('');
     } catch (err) {
+      console.error('Authentication error:', err);
       setError(isLogin ? 'Error de inicio de sesión. Por favor, verifica tus credenciales.' : 'Error de registro. Por favor, inténtalo de nuevo.');
     } finally {
       setIsLoading(false);
