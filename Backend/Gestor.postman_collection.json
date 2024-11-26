@@ -4,7 +4,7 @@
 		"name": "Gestor",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27107005",
-		"_collection_link": "https://cloudy-zodiac-419516.postman.co/workspace/177ef2e6-d6d1-46c2-bdcb-574c7a703445/collection/27107005-ca428bb1-293e-440c-bad1-6ee48250f493?action=share&source=collection_link&creator=27107005"
+		"_collection_link": "https://cloudy-zodiac-419516.postman.co/workspace/Topicos~177ef2e6-d6d1-46c2-bdcb-574c7a703445/collection/27107005-ca428bb1-293e-440c-bad1-6ee48250f493?action=share&source=collection_link&creator=27107005"
 	},
 	"item": [
 		{
@@ -28,7 +28,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"categoryName\":\"Furniture\"\n}"
+							"raw": "{\n    \"categoryName\":\"Enterteiment\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/topicos/category/create",
@@ -98,6 +98,16 @@
 				{
 					"name": "Delete Category",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -171,20 +181,22 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"// Asumiendo que el token es devuelto como texto plano en la respuesta\r",
-									"var responseBody = pm.response.text();  // Obtén el cuerpo de la respuesta como texto\r",
+									"// Asumiendo que el token y el userId son devueltos en un objeto JSON\r",
+									"var responseBody = pm.response.json();  // Obtén el cuerpo de la respuesta como JSON\r",
 									"\r",
-									"// Aquí extraemos el token usando una expresión regular\r",
-									"var tokenPattern = /^[A-Za-z0-9\\-\\._~\\+\\/]+=*$/;  // Patrón básico para validar el token JWT\r",
-									"var token = responseBody.trim();  // El token debe ser el texto plano recibido\r",
+									"// Extraer el token y el userId del objeto JSON\r",
+									"var token = responseBody.token;\r",
+									"var userId = responseBody.userId;\r",
 									"\r",
-									"// Verificar que el token coincide con el patrón\r",
-									"if (tokenPattern.test(token)) {\r",
+									"// Verificar que el token y el userId no sean nulos o indefinidos\r",
+									"if (token && userId) {\r",
 									"    // Establecer la variable global 'token' en Postman\r",
 									"    pm.globals.set(\"token\", token);\r",
+									"    pm.globals.set(\"userId\", userId);\r",
 									"    console.log(\"Token guardado en variable global: \", token);\r",
+									"    console.log(\"UserId guardado en variable global: \", userId);\r",
 									"} else {\r",
-									"    console.log(\"No se encontró un token válido en la respuesta.\");\r",
+									"    console.log(\"No se encontró un token o userId válido en la respuesta.\");\r",
 									"}\r",
 									""
 								],
@@ -240,7 +252,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userName\": \"Rafa4\",\r\n    \"password\": \"12345\"\r\n}",
+							"raw": "{\r\n    \"userName\": \"Rafa\",\r\n    \"password\": \"12345\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -264,6 +276,16 @@
 				{
 					"name": "get user by id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -287,7 +309,7 @@
 					"response": []
 				},
 				{
-					"name": "Get All Users",
+					"name": "Get All Users (ADMIN)",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -312,7 +334,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete User",
+					"name": "Delete User (ADMIN)",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -344,7 +366,13 @@
 			"item": [
 				{
 					"name": "Create Bank Account",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -360,7 +388,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"bankName\": \"Banco Santander\",\n  \"baseCurrency\": \"USD\",\n  \"initialBalance\": 1500.50,\n  \"user\": {\n    \"userId\": 3\n  }\n}"
+							"raw": "{\n  \"bankName\": \"Scotiabank\",\n  \"baseCurrency\": \"UYU\",\n  \"initialBalance\": 20000,\n  \"user\": {\n    \"userId\": 2\n  }\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/topicos/bank-accounts/create",
@@ -377,22 +405,27 @@
 					"response": []
 				},
 				{
-					"name": "Get Bank Account By ID",
+					"name": "Get Bank Account By ID (ADMIN)",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJSYWZhIiwiaWF0IjoxNzMyNDgxNjUwLCJleHAiOjE3MzI0ODUyNTB9.8rnxJrta3S5g4-dN-Q7U54hPJ2n0q-GbNmVh51ddCt1MXds0GuW146I0QnhGbBxML2Bj-qBbrpPlaaDVKx5TXQ",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/topicos/bank-accounts/get/1",
+							"raw": "{{base_url}}/topicos/bank-accounts/get/{{bankAccountId}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -400,15 +433,18 @@
 								"topicos",
 								"bank-accounts",
 								"get",
-								"1"
+								"{{bankAccountId}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get All Bank Accounts",
+					"name": "Get All Bank Accounts (ADMIN)",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -460,6 +496,9 @@
 				{
 					"name": "Update Bank Account",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -475,10 +514,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"bankName\": \"Updated Bank\",\n  \"baseCurrency\": \"TEST\",\n  \"initialBalance\": 1200.00,\n  \"user\": {\n    \"userId\": 1\n  }\n}"
+							"raw": "{\n  \"bankName\": \"Cuenta Prex\",\n  \"baseCurrency\": \"TEST\",\n  \"initialBalance\": 1200.00,\n  \"user\": {\n    \"userId\": 3\n  }\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/topicos/bank-accounts/update/1",
+							"raw": "{{base_url}}/topicos/bank-accounts/update/8",
 							"host": [
 								"{{base_url}}"
 							],
@@ -486,7 +525,7 @@
 								"topicos",
 								"bank-accounts",
 								"update",
-								"1"
+								"8"
 							]
 						}
 					},
@@ -496,14 +535,7 @@
 					"name": "Get Bank Accounts By User ID",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "Bearer{{token}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [
@@ -537,14 +569,7 @@
 					"name": "Get Bank Account By User ID and Account ID",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "Bearer{{token}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [
@@ -594,7 +619,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"date\": \"2024-11-22\",\n    \"description\": \"Compra supermercado\",\n    \"amount\": 100.50,\n    \"type\": \"EXPENSE\",\n    \"isRecurrent\": false,\n    \"user\": {\n        \"userId\": 1\n    },\n    \"category\": {\n        \"categoryId\": 1\n    },\n    \"bankAccount\": {\n        \"bankAccountId\": 1\n    }\n}\n"
+							"raw": "{\n    \"date\": \"2024-11-22\",\n    \"description\": \"Compra random\",\n    \"amount\": 1450,\n    \"type\": \"EXPENSE\",\n    \"isRecurrent\": false,\n    \"user\": {\n        \"userId\": 2\n    },\n    \"category\": {\n        \"categoryId\": 2\n    },\n    \"bankAccount\": {\n        \"bankAccountId\": 16\n    }\n}\n"
 						},
 						"url": {
 							"raw": "{{base_url}}/topicos/transaction/create",
@@ -622,22 +647,23 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/topicos/transaction/get/1",
+							"raw": "{{base_url}}/topicos/transaction/getall/user/{{userId}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"topicos",
 								"transaction",
-								"get",
-								"1"
+								"getall",
+								"user",
+								"{{userId}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get All Transactions",
+					"name": "Get All Transactions (ADMIN)",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -673,7 +699,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/topicos/transaction/delete/1",
+							"raw": "{{base_url}}/topicos/transaction/delete/{{id}}/user/{{userId}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -681,7 +707,9 @@
 								"topicos",
 								"transaction",
 								"delete",
-								"1"
+								"{{id}}",
+								"user",
+								"{{userId}}"
 							]
 						}
 					},
@@ -707,7 +735,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"date\": \"2024-11-22\",\n    \"description\": \"Compra supermercado actualizada\",\n    \"amount\": 200.75,\n    \"type\": \"EXPENSE\",\n    \"isRecurrent\": true,\n    \"user\": {\n        \"userId\": 1\n    },\n    \"category\": {\n        \"categoryId\": 2\n    },\n    \"bankAccount\": {\n        \"bankAccountId\": 3\n    }\n}",
+							"raw": "{\n    \"date\": \"2024-11-22\",\n    \"description\": \"Compra supermercado actualizada\",\n    \"amount\": 20.75,\n    \"type\": \"EXPENSE\",\n    \"isRecurrent\": true,\n    \"user\": {\n        \"userId\": 1\n    },\n    \"category\": {\n        \"categoryId\": 2\n    },\n    \"bankAccount\": {\n        \"bankAccountId\": 3\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -715,7 +743,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/topicos/transaction/update/2",
+							"raw": "{{base_url}}/topicos/transaction/update/{{transactionId}}/user/{{userId}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -723,7 +751,9 @@
 								"topicos",
 								"transaction",
 								"update",
-								"2"
+								"{{transactionId}}",
+								"user",
+								"{{userId}}"
 							]
 						}
 					},
@@ -755,7 +785,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/topicos/transaction/getbycategory/{{categoryId}}",
+							"raw": "{{base_url}}/topicos/transaction/getbycategory/{{categoryId}}/user/{{userId}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -763,7 +793,9 @@
 								"topicos",
 								"transaction",
 								"getbycategory",
-								"{{categoryId}}"
+								"{{categoryId}}",
+								"user",
+								"{{userId}}"
 							]
 						}
 					},
@@ -794,14 +826,17 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/transaction/getbytype/{{type}}",
+							"raw": "{{base_url}}/topicos/transaction/getbytype/{{type}}/user/{{userId}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"topicos",
 								"transaction",
 								"getbytype",
-								"{{type}}"
+								"{{type}}",
+								"user",
+								"{{userId}}"
 							]
 						}
 					},
@@ -815,6 +850,16 @@
 				{
 					"name": "Create Budget Copy",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -830,7 +875,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"maxAmount\": 500.00,\n  \"alertTriggered\": false,\n  \"initialDate\": \"2024-01-01\",\n  \"category\": {\n    \"categoryId\": 1\n  },\n  \"user\": {\n    \"userId\": 1\n  }\n}"
+							"raw": "{\n  \"maxAmount\": 5000.00,\n  \"alertTriggered\": false,\n  \"initialDate\": \"2024-01-01\",\n  \"category\": {\n    \"categoryId\": 2\n  },\n  \"user\": {\n    \"userId\": 2\n  }\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/topicos/budget/create",
@@ -847,7 +892,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Budget Copy",
+					"name": "Update Budget",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -864,10 +909,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"maxAmount\": 600.00,\n  \"alertTriggered\": true,\n  \"initialDate\": \"2024-01-01\",\n  \"category\": {\n    \"categoryId\": 1\n  },\n  \"user\": {\n    \"userId\": 1\n  }\n}"
+							"raw": "{\n  \"maxAmount\": 8000.00,\n  \"alertTriggered\": true,\n  \"initialDate\": \"2024-01-01\",\n  \"category\": {\n    \"categoryId\": 1\n  },\n  \"user\": {\n    \"userId\": 2\n  }\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/topicos/budget/update/1",
+							"raw": "{{base_url}}/topicos/budget/update/{{budgetId}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -875,7 +920,7 @@
 								"topicos",
 								"budget",
 								"update",
-								"1"
+								"{{budgetId}}"
 							]
 						}
 					},
@@ -893,7 +938,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/topicos/budget/get/1",
+							"raw": "{{base_url}}/topicos/budget/get/{{budgetId}}/user/{{userId}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -901,7 +946,9 @@
 								"topicos",
 								"budget",
 								"get",
-								"1"
+								"{{budgetId}}",
+								"user",
+								"{{userId}}"
 							]
 						}
 					},
@@ -933,17 +980,10 @@
 					"response": []
 				},
 				{
-					"name": "Delete Budget Copy",
+					"name": "Delete Budget",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "DELETE",
 						"header": [
@@ -954,7 +994,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/topicos/budget/delete/1",
+							"raw": "{{base_url}}/topicos/budget/delete/{{budgetId}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -962,7 +1002,35 @@
 								"topicos",
 								"budget",
 								"delete",
-								"1"
+								"{{budgetId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Check by bugdetId",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwidXNlcm5hbWUiOiJSYWZhIiwiaWF0IjoxNzMyNTk0MDgzLCJleHAiOjE3MzI1OTc2ODN9.F9SekAlf4wF16_c168hCPRMOHI5q1QJrgBpN_YKQ9JFdRvVLDiX8yzeA7Py6rLmSM_a4dfy8tv7KJdo9ztuYBw"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/topicos/budget/check-budget-status/category/{{categoryId}}/user/{{userId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"topicos",
+								"budget",
+								"check-budget-status",
+								"category",
+								"{{categoryId}}",
+								"user",
+								"{{userId}}"
 							]
 						}
 					},
@@ -971,16 +1039,6 @@
 			]
 		}
 	],
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{token}}",
-				"type": "string"
-			}
-		]
-	},
 	"event": [
 		{
 			"listen": "prerequest",

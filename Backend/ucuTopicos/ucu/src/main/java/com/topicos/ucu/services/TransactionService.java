@@ -88,12 +88,9 @@ public class TransactionService {
     }
 
     public List<Transaction> getAllByUser(Long userId) {
-        User user = repositoryUser.findById(userId).orElse(null);
-        if (user != null) {
-            return repositoryTransaction.findByUser(user);
-        }
-        return List.of();
+        return repositoryTransaction.findByUser_UserId(userId);
     }
+
 
     public boolean deleteTransaction(Long id, Long userId) {
         Optional<Transaction> transactionOptional = repositoryTransaction.findById(id);
@@ -134,4 +131,9 @@ public class TransactionService {
         }
         return List.of();
     }
+
+    public List<Transaction> getAll() { //funcion tipo admin
+        return repositoryTransaction.findAll();
+    }
+
 }
