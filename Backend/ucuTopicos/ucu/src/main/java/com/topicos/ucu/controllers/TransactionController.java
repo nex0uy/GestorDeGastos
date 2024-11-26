@@ -61,9 +61,18 @@ public class TransactionController {
             return ResponseEntity.status(403).body(null); // Forbidden
         }
 
-        Optional<Transaction> transactionOptional = transactionService.getById(id, userId);
+        Optional<Transaction> transactionOptional = transactionService.getById(id,userId);
         return transactionOptional.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    @GetMapping(path = "/getall") //endpoint para admin
+    public ResponseEntity<List<Transaction>> getAllTransactions(@RequestHeader("Authorization") String token) {
+        if (!jwtTokenUtil.validateToken(token.replace("Bearer ", ""))) {
+            return ResponseEntity.status(401).body(null);
+        }
+
+        List<Transaction> transactions = transactionService.getAll();
+        return ResponseEntity.ok(transactions);
     }
 
     @GetMapping(path = "/getall/user/{userId}")

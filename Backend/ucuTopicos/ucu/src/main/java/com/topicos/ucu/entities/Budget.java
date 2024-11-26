@@ -29,4 +29,11 @@ public class Budget {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
+
+    public boolean isBudgetExceeded(BigDecimal totalSpent) {
+        return totalSpent.compareTo(this.maxAmount) >= 0;
+    }
+    public Long getUserId() {
+        return user != null ? user.getUserId() : null;
+    }
 }
