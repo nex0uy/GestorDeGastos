@@ -35,7 +35,8 @@ CREATE TABLE "budget" (
     alert_triggered BOOLEAN DEFAULT FALSE,
     initial_date DATE NOT NULL,
     category_id INT REFERENCES "category" (category_id),
-    user_id INT REFERENCES "users" (user_id)
+    user_id INT REFERENCES "users" (user_id),
+    CONSTRAINT unique_category_user UNIQUE (category_id, user_id)
 );
 
 CREATE TABLE "currency" (
